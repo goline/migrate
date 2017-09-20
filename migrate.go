@@ -9,6 +9,7 @@ import (
 	"github.com/goline/utils"
 	"github.com/mattes/migrate"
 	_ "github.com/mattes/migrate/database/postgres"
+	_ "github.com/mattes/migrate/source/file"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -96,13 +97,10 @@ func preloadConfig() {
 }
 
 func getMigrateInstance() (*migrate.Migrate, error) {
-	fmt.Println(fmt.Sprintf("file://%s", migrationDir), conf.DbAddress)
-	m, err := migrate.New(
+	return migrate.New(
 		fmt.Sprintf("file://%s", migrationDir),
 		conf.DbAddress,
 	)
-	fmt.Println(m, err)
-	return m, err
 }
 
 func PanicOnError(err error) {
