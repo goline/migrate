@@ -96,10 +96,13 @@ func preloadConfig() {
 }
 
 func getMigrateInstance() (*migrate.Migrate, error) {
-	return migrate.New(
+	fmt.Println(fmt.Sprintf("file://%s", migrationDir), conf.DbAddress)
+	m, err := migrate.New(
 		fmt.Sprintf("file://%s", migrationDir),
 		conf.DbAddress,
 	)
+	fmt.Println(m, err)
+	return m, err
 }
 
 func PanicOnError(err error) {
