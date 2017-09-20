@@ -1,0 +1,8 @@
+package: github.com/goline/migrate
+import:
+- package: github.com/mattes/migrate
+  version: ~3.0.1
+- package: github.com/lib/pq
+- package: gopkg.in/alecthomas/kingpin.v2
+  version: ~2.2.5
+- package: github.com/goline/utils
