@@ -1,19 +1,14 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
-	"net/url"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/goline/lapi"
 	"github.com/goline/utils"
-	_ "github.com/lib/pq"
 	"github.com/mattes/migrate"
-	"github.com/mattes/migrate/database"
-	"github.com/mattes/migrate/database/postgres"
+	_ "github.com/mattes/migrate/database/postgres"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -62,7 +57,7 @@ func makeMigrationFile() {
 	name := strings.Replace(*makeName, " ", "_", -1)
 	now := time.Now().Unix()
 
-	lapi.Must(
+	Must(
 		createNewFile(fmt.Sprintf("%s/%d_%s.up.sql", dir, now, name)),
 		createNewFile(fmt.Sprintf("%s/%d_%s.down.sql", dir, now, name)),
 	)
@@ -80,10 +75,7 @@ func createNewFile(path string) error {
 
 func migrateUp() {
 	fmt.Println("Upgrade migrations ...")
-	driver, err := getDatabaseDriver()
-	PanicOnError(err)
-
-	m, err := getMigrateInstance(driver)
+	m, err := getMigrateInstance()
 	PanicOnError(err)
 
 	PanicOnError(m.Up())
@@ -92,10 +84,7 @@ func migrateUp() {
 
 func migrateDown() {
 	fmt.Println("Downgrade migrations ...")
-	driver, err := getDatabaseDriver()
-	PanicOnError(err)
-
-	m, err := getMigrateInstance(driver)
+	m, err := getMigrateInstance()
 	PanicOnError(err)
 
 	PanicOnError(m.Down())
@@ -106,27 +95,21 @@ func preloadConfig() {
 	utils.NewIniLoader().Load(configFile, conf)
 }
 
-func getDatabaseDriver() (database.Driver, error) {
-	db, err := sql.Open("postgres", conf.DbAddress)
-	PanicOnError(err)
-	return postgres.WithInstance(db, &postgres.Config{})
-}
-
-func getMigrateInstance(driver database.Driver) (*migrate.Migrate, error) {
-	u, err := url.Parse(conf.DbAddress)
-	if err != nil {
-		return nil, err
-	}
-	name := strings.Replace(u.Path, "/", "", 1)
-	fmt.Println(migrationDir, " -- ", name, " -- ", driver)
-	return migrate.NewWithDatabaseInstance(
-		fmt.Sprintf("file:///%s", migrationDir),
-		name, driver,
+func getMigrateInstance() (*migrate.Migrate, error) {
+	return migrate.New(
+		fmt.Sprintf("file://%s", migrationDir),
+		conf.DbAddress,
 	)
 }
 
 func PanicOnError(err error) {
 	if err != nil {
 		panic(err)
+	}
+}
+
+func Must(errors ...error) {
+	for _, err := range errors {
+		PanicOnError(err)
 	}
 }
