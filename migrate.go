@@ -108,6 +108,7 @@ func preloadConfig() {
 
 func getDatabaseDriver() (database.Driver, error) {
 	db, err := sql.Open("postgres", conf.DbAddress)
+	fmt.Println(conf.DbAddress, err)
 	PanicOnError(err)
 	return postgres.WithInstance(db, &postgres.Config{})
 }
