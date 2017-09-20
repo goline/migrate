@@ -20,7 +20,7 @@ var (
 
 	makeCmd          = app.Command("make", "Make empty migration files")
 	makeName         = makeCmd.Arg("name", "File's name to be created").Required().String()
-	makeMigrationDir = upCmd.Flag("dir", "Migration directory").Required().String()
+	makeMigrationDir = makeCmd.Flag("dir", "Migration directory").Required().String()
 
 	upCmd          = app.Command("up", "Run upgrade migration")
 	upMigrationDir = upCmd.Flag("dir", "Migration directory").Required().String()
