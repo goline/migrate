@@ -3,16 +3,18 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/goline/lapi"
-	"github.com/goline/utils"
-	"github.com/mattes/migrate"
-	"github.com/mattes/migrate/database"
-	"github.com/mattes/migrate/database/postgres"
-	"gopkg.in/alecthomas/kingpin.v2"
 	"net/url"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/goline/lapi"
+	"github.com/goline/utils"
+	_ "github.com/lib/pq"
+	"github.com/mattes/migrate"
+	"github.com/mattes/migrate/database"
+	"github.com/mattes/migrate/database/postgres"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
