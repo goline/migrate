@@ -108,7 +108,6 @@ func preloadConfig() {
 
 func getDatabaseDriver() (database.Driver, error) {
 	db, err := sql.Open("postgres", conf.DbAddress)
-	fmt.Println(conf.DbAddress, err)
 	PanicOnError(err)
 	return postgres.WithInstance(db, &postgres.Config{})
 }
@@ -119,6 +118,7 @@ func getMigrateInstance(driver database.Driver) (*migrate.Migrate, error) {
 		return nil, err
 	}
 	name := strings.Replace(u.Path, "/", "", 1)
+	fmt.Println(migrationDir, " -- ", name, " -- ", driver)
 	return migrate.NewWithDatabaseInstance(
 		fmt.Sprintf("file:///%s", migrationDir),
 		name, driver,
