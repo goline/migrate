@@ -6,7 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/goline/utils"
 	"github.com/mattes/migrate"
 	_ "github.com/mattes/migrate/database/postgres"
 	_ "github.com/mattes/migrate/source/file"
