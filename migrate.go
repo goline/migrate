@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	u "github.com/goline/utils"
+	"github.com/goline/tools"
 	"github.com/mattes/migrate"
 	_ "github.com/mattes/migrate/database/postgres"
 	_ "github.com/mattes/migrate/source/file"
@@ -93,7 +93,7 @@ func migrateDown() {
 }
 
 func preloadConfig() {
-	u.LoadIni(configFile, conf)
+	tools.LoadIni(configFile, conf)
 }
 
 func getMigrateInstance() (*migrate.Migrate, error) {

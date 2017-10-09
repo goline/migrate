@@ -4,4 +4,4 @@ import:
   version: ~3.0.1
 - package: gopkg.in/alecthomas/kingpin.v2
   version: ~2.2.5
-- package: github.com/goline/utils
+- package: github.com/goline/tools
